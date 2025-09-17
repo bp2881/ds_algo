@@ -56,6 +56,38 @@ private:
 		}
 		return arr;
 	}
+	
+	void merge(vector<int>& arr, int start, int middle, int end) {
+		int n1 = middle - start + 1;
+		int n2 = end - middle;
+		
+		vector<int> V1(arr.begin() + start, arr.begin() + middle + 1);
+		vector<int> V2(arr.begin() + middle + 1, arr.begin() + end + 1);
+		
+		int i = 0, j = 0, k = start;
+		while (i < n1 && j < n2) {
+			if (V1[i] <= V2[j]) {
+				arr[k] = V1[i];
+				i++;
+			}
+			else {
+				arr[k] = V2[j];
+				j++;
+			}
+			k++;
+		}
+		while (i < n1) {
+			arr[k] = V1[i];
+			i++;
+			k++;
+		}
+
+		while (j < n2) {
+			arr[k] = V2[j];
+			j++;
+			k++;
+		}
+	}
 
 public:
     vector<int> counting_sort(vector<int> arr) {
@@ -82,7 +114,7 @@ public:
         return sorted_list;
     }
     
-    vector<int> radix_sort(vector<int> arr, int base = 10, char sub_routine = 'c') {
+    vector<int> radix_sort(vector<int> arr, int base = 10) {
         if (arr.empty()) return arr;
 
         vector<int> mima = minmax(arr);
@@ -131,6 +163,18 @@ public:
 		}
 		return sorted_arr;
 	}
+	
+	void merge_sort(vector<int>& arr, int start, int end) {
+		if (start >= end) {
+			return;
+		}
+		
+		int middle = (start + end)/2;
+		
+		merge_sort(arr, start, middle);
+		merge_sort(arr, middle + 1, end);
+		merge(arr, start, middle, end);
+	}
 };
 
 int main(int argc, char** argv) {
@@ -146,9 +190,9 @@ int main(int argc, char** argv) {
         arr.push_back(atoi(argv[i]));
     }
     
-    vector<int> sorted_arr = sort.bucket_sort(arr);
+	
     cout << "Sorted Array: ";
-    for (auto i : sorted_arr) {
+    for (auto i : arr) {
         cout << i << " ";
     }
     cout << endl;
