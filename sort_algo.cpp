@@ -5,13 +5,12 @@
 
 using std::cout;
 using std::endl;
-using std::vector;
 using std::atoi;
 using std::cin;
 
 class Sort {
 private:
-    vector<int> minmax(vector<int> arr) {
+    std::vector<int> minmax(std::vector<int> arr) {
         int min = INT_MAX, max = INT_MIN;
         for (auto i : arr) {
             if (i < min) min = i;
@@ -20,10 +19,10 @@ private:
         return {min, max};
     }
     
-    vector<int> counting_sort_subroutine(vector<int> arr, int exp, int base) {
+    std::vector<int> counting_sort_subroutine(std::vector<int> arr, int exp, int base) {
         int n = arr.size();
-        vector<int> frequency(base, 0);
-        vector<int> sorted(n);
+        std::vector<int> frequency(base, 0);
+        std::vector<int> sorted(n);
 
         for (int i = 0; i < n; i++) {
             int digit = (arr[i] / exp) % base;
@@ -43,7 +42,7 @@ private:
         return sorted;
     }
     
-    vector<int> insertion_sort_subroutine(vector<int> arr) {
+    std::vector<int> insertion_sort_subroutine(std::vector<int> arr) {
 		int n = arr.size();
 		for (int i = 1; i < n; i++) {
 			int key = arr[i];
@@ -58,12 +57,12 @@ private:
 		return arr;
 	}
 	
-	void merge(vector<int>& arr, int start, int middle, int end) {
+	void merge(std::vector<int>& arr, int start, int middle, int end) {
 		int n1 = middle - start + 1;
 		int n2 = end - middle;
 		
-		vector<int> V1(arr.begin() + start, arr.begin() + middle + 1);
-		vector<int> V2(arr.begin() + middle + 1, arr.begin() + end + 2);
+		std::vector<int> V1(arr.begin() + start, arr.begin() + middle + 1);
+		std::vector<int> V2(arr.begin() + middle + 1, arr.begin() + end + 2);
 	
 		
 		
@@ -128,17 +127,17 @@ private:
 
 public:
 	// Constructor to choose algo based on elements
-	Sort(vector<int> arr) {
+	Sort(std::vector<int> arr) {
 		// Use couting sort when data is "cramped" and "range is small" 
 		// Will do soon
 	}
     
-    vector<int> counting_sort(vector<int> arr) {
-        vector<int> mima = minmax(arr);
+    std::vector<int> counting_sort(std::vector<int> arr) {
+        std::vector<int> mima = minmax(arr);
         int min = mima[0], max = mima[1];
         int k = max - min, n = arr.size();
-        vector<int> frequency(k + 1, 0);
-        vector<int> sorted_list(n);
+        std::vector<int> frequency(k + 1, 0);
+        std::vector<int> sorted_list(n);
 
         for (auto i : arr) {
             frequency[i - min]++;
@@ -157,10 +156,10 @@ public:
         return sorted_list;
     }
     
-    vector<int> radix_sort(vector<int> arr, int base = 10) {
+    std::vector<int> radix_sort(std::vector<int> arr, int base = 10) {
         if (arr.empty()) return arr;
 
-        vector<int> mima = minmax(arr);
+        std::vector<int> mima = minmax(arr);
         int maxVal = mima[1], minVal = mima[0];
         
         if (minVal < 0) {
@@ -170,7 +169,7 @@ public:
 
         int digits = (maxVal == 0) ? 1 : (std::floor(std::log(maxVal) / std::log(base)) + 1);
 
-        vector<int> sorted_arr = arr;
+        std::vector<int> sorted_arr = arr;
         int exp = 1;
         for (int i = 0; i < digits; i++) {
             sorted_arr = counting_sort_subroutine(sorted_arr, exp, base);
@@ -180,20 +179,20 @@ public:
         return sorted_arr;
     }
     
-    vector<int> bucket_sort(vector<int> arr) {
+    std::vector<int> bucket_sort(std::vector<int> arr) {
 		int n = arr.size();
 		if (arr.empty()) return arr;
 
-        vector<int> mima = minmax(arr);
+        std::vector<int> mima = minmax(arr);
         int maxVal = mima[1], minVal = mima[0];
-        vector<int> sorted_arr;
+        std::vector<int> sorted_arr;
         
         if (minVal < 0) {
             cout << "Elements should be positive!" << endl;
             return {};
         }
         
-        vector<vector<int>> bucket(n);
+        std::vector<std::vector<int>> bucket(n);
         for (auto i: arr) {
 			double normalized = (double)i / (maxVal + 1);
 			int bucket_no = n*normalized;
@@ -207,7 +206,7 @@ public:
 		return sorted_arr;
 	}
 	
-	void merge_sort(vector<int>& arr, int start, int end) {
+	void merge_sort(std::vector<int>& arr, int start, int end) {
 		if (start >= end) {
 			return;
 		}
@@ -241,7 +240,7 @@ public:
 
 int main(int argc, char** argv) {
     Sort sort;
-    vector<int> arr;
+    std::vector<int> arr;
     
     if (argc <= 1) {
         cout << "This Program accepts command line args (give array elements)" << endl;
