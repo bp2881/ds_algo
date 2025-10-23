@@ -1,1 +1,4 @@
 *.o
+test
+sort_algo
+test.cpp

@@ -7,6 +7,7 @@ using std::cout;
 using std::endl;
 using std::vector;
 using std::atoi;
+using std::cin;
 
 class Sort {
 private:
@@ -62,7 +63,9 @@ private:
 		int n2 = end - middle;
 		
 		vector<int> V1(arr.begin() + start, arr.begin() + middle + 1);
-		vector<int> V2(arr.begin() + middle + 1, arr.begin() + end + 1);
+		vector<int> V2(arr.begin() + middle + 1, arr.begin() + end + 2);
+	
+		
 		
 		int i = 0, j = 0, k = start;
 		while (i < n1 && j < n2) {
@@ -88,8 +91,48 @@ private:
 			k++;
 		}
 	}
+	
+	void heapify(std::vector<int>& arr, int n, int i, bool min) {
+		int keyNode = i;
+		
+		int leftChild = 2 * i + 1;
+		int rightChild = 2 * i + 2;
+		
+		if (min) {
+			if (leftChild < n && arr[leftChild] < arr[keyNode]) {
+				keyNode = leftChild;
+			}
+		
+			if (rightChild < n && arr[rightChild] < arr[keyNode]) {
+				keyNode = rightChild;
+			}
+		}
+		else {
+			if (leftChild < n && arr[leftChild] > arr[keyNode]) {
+				keyNode = leftChild;
+			}
+		
+			if (rightChild < n && arr[rightChild] > arr[keyNode]) {
+				keyNode = rightChild;
+			}
+		}
+		
+		if (keyNode != i) {
+			int temp = arr[i];
+			arr[i] = arr[keyNode];
+			arr[keyNode] = temp;
+			
+			heapify(arr, n, keyNode, min);
+		}
+	}
 
 public:
+	// Constructor to choose algo based on elements
+	Sort(vector<int> arr) {
+		// Use couting sort when data is "cramped" and "range is small" 
+		// Will do soon
+	}
+    
     vector<int> counting_sort(vector<int> arr) {
         vector<int> mima = minmax(arr);
         int min = mima[0], max = mima[1];
@@ -175,7 +218,26 @@ public:
 		merge_sort(arr, middle + 1, end);
 		merge(arr, start, middle, end);
 	}
+	
+	std::vector<int> heapSort(std::vector<int> arr, int n, bool min = true) {
+		std::vector<int> sorted;
+		sorted.reserve(n);
+		for (int i = n / 2 - 1; i >= 0; i--) {
+			heapify(arr, n, i, min);
+		}
+	
+		for (int i = n - 1; i >= 0; i--) {
+			sorted.push_back(arr[0]);
+			arr[0] = arr[i];
+			arr[i] = min ? INT_MAX : INT_MIN;
+		
+			heapify(arr, i, 0, min);
+		}
+	
+		return sorted;
+	}
 };
+
 
 int main(int argc, char** argv) {
     Sort sort;
@@ -190,6 +252,7 @@ int main(int argc, char** argv) {
         arr.push_back(atoi(argv[i]));
     }
     
+    // Choose which algo is suitable based on data -- TODO
 	
     cout << "Sorted Array: ";
     for (auto i : arr) {
