@@ -124,6 +124,18 @@ private:
 			heapify(arr, n, keyNode, min);
 		}
 	}
+	int partition(std::vector<int>& arr, int start, int end) {
+		int pivot = arr[end];
+		int i = start - 1;
+		
+		for (int j = start; j < end; j++) {
+			if (arr[j] < pivot) {
+				std::swap(arr[j], arr[++i]);
+			}
+		} 
+		std::swap(arr[++i], arr[end]);
+		return i;
+	}
 
 public:
 	// Constructor to choose algo based on elements
@@ -234,6 +246,12 @@ public:
 		}
 	
 		return sorted;
+	}
+	void quickSort(std::vector<int>& arr, int start, int end) {
+		if (end <= start) return;
+		int pivot = partition(arr, start, end);
+		quickSort(arr, start, pivot - 1);
+		quickSort(arr, pivot + 1, end);
 	}
 };
 
